@@ -1,0 +1,998 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --teal: #009de0;
+  --teal-dark: #007ab8;
+  --teal-glow: rgba(0, 157, 224, .18);
+  --green: #00c9a7;
+  --green-dark: #00a888;
+  --green-glow: rgba(0, 201, 167, .18);
+  --amber: #f59e0b;
+
+  --bg: #f0f4f8;
+  --surface: #ffffff;
+  --border: rgba(0, 0, 0, .07);
+  --border-hl: rgba(0, 0, 0, .13);
+  --text-1: #0d1b2a;
+  --text-2: #4a5568;
+  --text-3: #8a96a3;
+
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --sh-sm: 0 1px 3px rgba(0, 0, 0, .06), 0 1px 2px rgba(0, 0, 0, .04);
+  --sh-md: 0 4px 16px rgba(0, 0, 0, .08);
+  --sh-lg: 0 12px 40px rgba(0, 0, 0, .10);
+  --ease: .22s cubic-bezier(.4, 0, .2, 1);
+}
+
+html.dark {
+  --bg: #0a0e14;
+  --surface: #111722;
+  --border: rgba(255, 255, 255, .06);
+  --border-hl: rgba(255, 255, 255, .12);
+  --text-1: #eef2f7;
+  --text-2: #8a96a8;
+  --text-3: #4a5568;
+  --sh-sm: 0 1px 3px rgba(0, 0, 0, .3);
+  --sh-md: 0 4px 16px rgba(0, 0, 0, .4);
+  --sh-lg: 0 12px 40px rgba(0, 0, 0, .5);
+}
+
+html {
+  font-size: 22px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text-1);
+  min-height: 100vh;
+  transition: background var(--ease), color var(--ease);
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Ambient Watermark Background */
+.bg-mascot {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bg-mascot-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: .08;
+  transition: opacity var(--ease);
+}
+
+html.dark .bg-mascot-img {
+  opacity: .04;
+}
+
+/* Dashboard Frame Layout */
+.dashboard {
+  position: relative;
+  z-index: 1;
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 28px 28px 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Top Navigation Bar */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 0;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--text-3);
+  flex-shrink: 0;
+  transition: all .3s;
+}
+
+.status-dot.ok {
+  background: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, .25);
+}
+
+.status-dot.err {
+  background: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, .25);
+}
+
+/* Polling Progress Indicator */
+.poll-indicator {
+  flex: 1;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.poll-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--teal);
+  border-radius: 2px;
+  transition: width .3s linear;
+  opacity: .6;
+}
+
+/* Settings Toggle Action */
+.gear-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  color: var(--text-2);
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--ease);
+  flex-shrink: 0;
+}
+
+.gear-btn:hover {
+  color: var(--text-1);
+  border-color: var(--border-hl);
+}
+
+.gear-btn.active {
+  color: var(--teal);
+  border-color: var(--teal);
+}
+
+/* Settings Configuration Panel */
+.settings-panel {
+  display: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 16px;
+  box-shadow: var(--sh-sm);
+}
+
+.settings-panel.open {
+  display: block;
+}
+
+.settings-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-1);
+  margin-bottom: 12px;
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 13px;
+  color: var(--text-2);
+  border-bottom: 1px solid var(--border);
+}
+
+.settings-row:last-child {
+  border-bottom: none;
+}
+
+.settings-group {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.settings-group:last-child {
+  border-bottom: none;
+}
+
+.settings-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-3);
+  margin-bottom: 6px;
+}
+
+.settings-range-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.settings-range-wrap input[type="range"] {
+  flex: 1;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--border);
+  border-radius: 2px;
+  outline: none;
+}
+
+.settings-range-wrap input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--teal);
+  cursor: pointer;
+}
+
+.settings-range-val {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+  min-width: 28px;
+  text-align: right;
+}
+
+.settings-theme-btns {
+  display: flex;
+  gap: 6px;
+}
+
+.theme-btn {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-2);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--ease);
+}
+
+.theme-btn.active {
+  border-color: var(--teal);
+  color: var(--teal);
+  background: rgba(0, 157, 224, 0.05);
+}
+
+.theme-btn:hover:not(.active) {
+  border-color: var(--border-hl);
+}
+
+/* Binary Toggle Switch */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+}
+
+.toggle-switch input {
+  display: none;
+}
+
+.toggle-track {
+  display: block;
+  width: 34px;
+  height: 18px;
+  background: var(--border-hl);
+  border-radius: 9px;
+  cursor: pointer;
+  transition: background var(--ease);
+  position: relative;
+}
+
+.toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  background: white;
+  border-radius: 50%;
+  transition: transform var(--ease);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.toggle-switch input:checked+.toggle-track {
+  background: var(--teal);
+}
+
+.toggle-switch input:checked+.toggle-track .toggle-thumb {
+  transform: translateX(16px);
+}
+
+/* Order Metric Cards */
+.count-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.count-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--sh-md);
+  transition: background var(--ease), box-shadow var(--ease), transform .15s;
+  position: relative;
+}
+
+.count-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--sh-lg);
+}
+
+.count-card.alert {
+  animation: card-flash .5s ease;
+}
+
+@keyframes card-flash {
+  50% {
+    background: color-mix(in srgb, var(--teal) 6%, var(--surface));
+  }
+}
+
+/* Deferred Accent Decorator */
+.count-card-accent {
+  display: none;
+}
+
+
+.count-card-inner {
+  padding: 18px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.count-label {
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--text-3);
+  text-transform: uppercase;
+}
+
+.count-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.count-number {
+  font-size: 3.2rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.count-number.pop {
+  animation: num-pop .35s cubic-bezier(.34, 1.56, .64, 1);
+}
+
+@keyframes num-pop {
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+.collect-num {
+  color: var(--green);
+}
+
+.wolt-num {
+  color: var(--teal);
+}
+
+.count-change {
+  font-size: .72rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 100px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: all .25s;
+}
+
+.count-change.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.count-change.up {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.count-change.down {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+html.dark .count-change.up {
+  background: rgba(239, 68, 68, .15);
+  color: #fca5a5;
+}
+
+html.dark .count-change.down {
+  background: rgba(34, 197, 94, .15);
+  color: #86efac;
+}
+
+/* Manual Force Poll Action */
+.refresh-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  color: var(--text-1);
+  font-family: inherit;
+  font-size: .88rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--sh-sm);
+  transition: all var(--ease);
+  position: relative;
+}
+
+.refresh-btn:hover {
+  background: var(--teal);
+  color: #fff;
+  border-color: var(--teal);
+  box-shadow: 0 4px 16px var(--teal-glow);
+  transform: translateY(-1px);
+}
+
+.refresh-btn:hover .refresh-icon {
+  stroke: #fff;
+}
+
+.refresh-btn:active {
+  transform: translateY(0) scale(.98);
+}
+
+.refresh-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  stroke: var(--text-2);
+  transition: stroke var(--ease), transform .5s;
+}
+
+.refresh-btn.spinning .refresh-icon {
+  animation: spin .7s ease;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.next-poll-text {
+  font-size: .7rem;
+  font-weight: 500;
+  color: var(--text-3);
+  margin-left: 4px;
+}
+
+.refresh-btn:hover .next-poll-text {
+  color: rgba(255, 255, 255, .7);
+}
+
+/* Master Summary Container */
+.summary-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 20px 18px;
+  box-shadow: var(--sh-md);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: background var(--ease);
+}
+
+.summary-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.summary-title {
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--text-1);
+  letter-spacing: -.2px;
+}
+
+.summary-date {
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--text-3);
+  background: var(--bg);
+  padding: 3px 10px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+}
+
+/* Statistics Data Grid */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.stat-tile {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 12px 6px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  transition: border-color var(--ease);
+}
+
+.stat-tile:hover {
+  border-color: var(--border-hl);
+}
+
+.stat-num {
+  font-size: 1.6rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -1px;
+  color: var(--text-1);
+}
+
+.collect-stat {
+  color: var(--green);
+}
+
+.wolt-stat {
+  color: var(--teal);
+}
+
+.busy-stat {
+  font-size: .95rem;
+  letter-spacing: 0;
+  color: var(--amber);
+}
+
+.stat-label {
+  font-size: .6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: var(--text-3);
+}
+
+/* Analytics Chart Block */
+.chart-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.chart-title {
+  font-size: .68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: var(--text-3);
+}
+
+.chart-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 64px;
+}
+
+.chart-labels {
+  display: flex;
+  gap: 3px;
+}
+
+.chart-labels span {
+  flex: 1;
+  text-align: center;
+  font-size: 8px;
+  font-weight: 600;
+  color: var(--text-3);
+}
+
+.dash-bar {
+  flex: 1;
+  min-width: 0;
+  border-radius: 3px 3px 0 0;
+  background: linear-gradient(to top, var(--teal), var(--green));
+  position: relative;
+  cursor: default;
+  transition: height .4s ease, opacity .15s;
+}
+
+.dash-bar:hover {
+  opacity: .75;
+}
+
+.dash-bar:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--text-1);
+  color: var(--surface);
+  padding: 3px 8px;
+  border-radius: 5px;
+  font-size: 9px;
+  font-weight: 600;
+  white-space: nowrap;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.dash-bar-empty {
+  flex: 1;
+  min-width: 0;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--border);
+}
+
+/* Component Entrance Sequences */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.topbar {
+  animation: fade-up .35s ease both;
+}
+
+.count-section {
+  animation: fade-up .35s .06s ease both;
+}
+
+.refresh-btn {
+  animation: fade-up .35s .12s ease both;
+}
+
+.summary-card {
+  animation: fade-up .35s .18s ease both;
+}
+
+/* Mobile Viewport Overrides */
+@media (max-width: 480px) {
+  .dashboard {
+    padding: 16px 14px 32px;
+  }
+
+  .count-number {
+    font-size: 2.4rem;
+  }
+
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ===== LAUNCHPAD THEME ===== */
+
+html.sap-theme {
+  /* SAP Launchpad Color Variables */
+  --teal: #354A5F;
+  --teal-dark: #2C3E50;
+  --teal-glow: rgba(53, 74, 95, .10);
+  --green: #107E3E;
+  --green-dark: #0A6B31;
+  --green-glow: rgba(16, 126, 62, .10);
+  --amber: #E78C07;
+
+  /* Architectural Colors */
+  --bg: #EDEFF0;
+  --surface: #FFFFFF;
+  --border: #D9D9D9;
+  --border-hl: #BDBDBD;
+  --text-1: #32363A;
+  --text-2: #6A6D70;
+  --text-3: #89919A;
+
+  /* Condensed Border Radii */
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 8px;
+
+  /* Flat Motif Shadows */
+  --sh-sm: 0 0 0 1px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --sh-md: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.06);
+  --sh-lg: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+html.sap-theme.dark {
+  --bg: #1C2228;
+  --surface: #243040;
+  --border: rgba(255, 255, 255, .08);
+  --border-hl: rgba(255, 255, 255, .14);
+  --text-1: #E8ECEF;
+  --text-2: #8A96A8;
+  --text-3: #5A6778;
+  --teal: #6F9FCC;
+  --teal-dark: #5A87B5;
+  --green: #48BB78;
+  --sh-sm: 0 1px 2px rgba(0, 0, 0, .2);
+  --sh-md: 0 2px 8px rgba(0, 0, 0, .3);
+  --sh-lg: 0 4px 16px rgba(0, 0, 0, .4);
+}
+
+/* Theme Body Initialization */
+html.sap-theme body {
+  background: var(--bg);
+}
+
+html.sap-theme .bg-mascot {
+  display: none;
+}
+
+html.sap-theme .dashboard {
+  max-width: 720px;
+  padding: 0 0 40px;
+  gap: 0;
+}
+
+/* Full Bleed Shell Header */
+html.sap-theme .topbar {
+  background: #354A5F;
+  border-radius: 0;
+  padding: 10px 24px;
+  margin: 0 -24px;
+  width: calc(100% + 48px);
+  box-shadow: none;
+  border: none;
+}
+
+html.sap-theme .topbar-title {
+  font-size: .85rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, .85);
+  letter-spacing: 0;
+}
+
+html.sap-theme .status-dot {
+  order: 10;
+}
+
+html.sap-theme .poll-indicator {
+  background: rgba(255, 255, 255, .15);
+}
+
+html.sap-theme .poll-bar {
+  background: #0A6B31;
+}
+
+html.sap-theme .gear-btn {
+  color: rgba(255, 255, 255, .8);
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+}
+
+html.sap-theme .gear-btn:hover {
+  background: rgba(255, 255, 255, .1);
+  color: #fff;
+}
+
+/* Order Metric Container */
+html.sap-theme .count-section {
+  padding: 20px 24px 0;
+  gap: 16px;
+  grid-template-columns: 1fr 1fr;
+}
+
+html.sap-theme .count-card {
+  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  box-shadow: var(--sh-sm);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+html.sap-theme .count-card:hover {
+  transform: none;
+  box-shadow: var(--sh-md);
+  border-color: var(--border-hl);
+}
+
+html.sap-theme .count-card-inner {
+  padding: 20px;
+  gap: 6px;
+}
+
+html.sap-theme .count-label {
+  font-size: .6rem;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  color: var(--text-3);
+}
+
+html.sap-theme .count-number {
+  font-size: 3.6rem;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+html.sap-theme .collect-num {
+  color: #107E3E;
+}
+
+html.sap-theme .wolt-num {
+  color: #354A5F;
+}
+
+/* SAP Launchpad Reload Action */
+html.sap-theme .refresh-btn {
+  margin: 16px 24px 0;
+  width: auto;
+  /* Establish auto-width to allow horizontal margin application */
+  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-size: .8rem;
+  font-weight: 600;
+  box-shadow: var(--sh-sm);
+  padding: 11px 20px;
+  color: var(--text-1);
+}
+
+html.sap-theme .refresh-btn:hover {
+  background: var(--teal);
+  color: #fff;
+  border-color: var(--teal);
+  box-shadow: none;
+  transform: none;
+}
+
+html.sap-theme .refresh-btn:hover .refresh-icon {
+  stroke: #fff;
+}
+
+/* SAP Launchpad Summary Container */
+html.sap-theme .summary-card {
+  margin: 16px 24px 0;
+  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  box-shadow: var(--sh-sm);
+  background: var(--surface);
+}
+
+html.sap-theme .summary-header {
+  border-bottom: 1px solid var(--border);
+  padding: 14px 20px;
+}
+
+html.sap-theme .summary-title {
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--text-1);
+}
+
+html.sap-theme .summary-date {
+  font-size: .7rem;
+  color: var(--text-3);
+}
+
+html.sap-theme .stat-grid {
+  padding: 16px 20px;
+}
+
+html.sap-theme .stat-tile {
+  border-radius: var(--r-sm);
+  background: var(--bg);
+  border: 1px solid var(--border);
+}
+
+html.sap-theme .stat-num {
+  font-weight: 700;
+}
+
+html.sap-theme .collect-stat {
+  color: #107E3E;
+}
+
+html.sap-theme .wolt-stat {
+  color: #354A5F;
+}
+
+html.sap-theme .busy-stat {
+  color: #E78C07;
+}
+
+html.sap-theme .chart-block {
+  border-top: 1px solid var(--border);
+  padding: 16px 20px 20px;
+}
+
+html.sap-theme .chart-title {
+  font-size: .7rem;
+  font-weight: 600;
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+html.sap-theme .dash-bar {
+  border-radius: 2px;
+  background: #354A5F;
+}
+
+/* SAP Launchpad Configuration Panel */
+html.sap-theme .settings-panel {
+  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  box-shadow: var(--sh-lg);
+  background: var(--surface);
+}
+
+html.sap-theme .settings-title {
+  color: var(--text-1);
+  font-size: .85rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+}
+
+html.sap-theme .theme-btn {
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+}
+
+html.sap-theme .theme-btn.active {
+  background: #354A5F;
+  border-color: #354A5F;
+  color: #fff;
+}
+
+/* SAP Launchpad Dark Theme Interpolation */
+html.sap-theme.dark .topbar {
+  background: #243040;
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+}
+
+html.sap-theme.dark .count-card-accent {
+  display: none;
+}

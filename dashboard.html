@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collectit ja Woltit</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- background mascot -->
+  <div class="bg-mascot" id="bgMascot">
+    <img src="woltgig.jpg" alt="" class="bg-mascot-img" id="bgMascotImg">
+  </div>
+
+  <main class="dashboard">
+
+    <header class="topbar">
+      <span class="status-dot" id="statusDot"></span>
+      <div class="poll-indicator" id="pollIndicator">
+        <div class="poll-bar" id="pollBar"></div>
+      </div>
+      <button class="gear-btn" id="gearBtn" aria-label="Asetukset">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3" />
+          <path
+            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+        </svg>
+      </button>
+    </header>
+
+    <!-- settings panel (hidden by default) -->
+    <div class="settings-panel" id="settingsPanel">
+      <div class="settings-inner">
+        <h3 class="settings-title">Asetukset</h3>
+
+        <div class="settings-row">
+          <span>Tumma tila</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="dashDarkMode">
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          </label>
+        </div>
+
+        <div class="settings-row">
+          <span>Äänimerkit</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="dashSoundEnabled" checked>
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          </label>
+        </div>
+
+        <div class="settings-group">
+          <label class="settings-label">Tarkistusväli</label>
+          <div class="settings-range-wrap">
+            <input type="range" id="dashPollInterval" min="5" max="60" value="30" step="5">
+            <span class="settings-range-val" id="dashPollValue">30s</span>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <label class="settings-label">Teema</label>
+          <div class="settings-theme-btns">
+            <button class="theme-btn active" data-theme="launchpad" id="dashThemeLaunchpad">Launchpad</button>
+            <button class="theme-btn" data-theme="wolt" id="dashThemeWolt">Wolt</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- count cards -->
+    <section class="count-section">
+      <div class="count-card" id="collectCard">
+        <div class="count-card-accent collect-accent"></div>
+        <div class="count-card-inner">
+          <span class="count-label">COLLECT</span>
+          <div class="count-row">
+            <span class="count-number collect-num" id="collectCount">0</span>
+            <span class="count-change" id="collectChange"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="count-card" id="woltCard">
+        <div class="count-card-accent wolt-accent"></div>
+        <div class="count-card-inner">
+          <span class="count-label">WOLT</span>
+          <div class="count-row">
+            <span class="count-number wolt-num" id="woltCount">0</span>
+            <span class="count-change" id="woltChange"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- refresh button -->
+    <button class="refresh-btn" id="refreshBtn" aria-label="Päivitä">
+      <svg class="refresh-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15" />
+      </svg>
+      <span>Päivitä</span>
+      <span class="next-poll-text" id="nextPollText"></span>
+    </button>
+
+    <!-- shift summary -->
+    <section class="summary-card">
+      <div class="summary-header">
+        <h2 class="summary-title">Päivän yhteenveto</h2>
+        <span class="summary-date" id="dashSessionStart"></span>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-tile">
+          <span class="stat-num" id="dashTotalOrders">0</span>
+          <span class="stat-label">Yhteensä</span>
+        </div>
+        <div class="stat-tile">
+          <span class="stat-num collect-stat" id="dashHistoryCollect">0</span>
+          <span class="stat-label">Collect</span>
+        </div>
+        <div class="stat-tile">
+          <span class="stat-num wolt-stat" id="dashHistoryWolt">0</span>
+          <span class="stat-label">Wolt</span>
+        </div>
+        <div class="stat-tile">
+          <span class="stat-num busy-stat" id="dashBusiestHour">&mdash;</span>
+          <span class="stat-label">Vilkkain</span>
+        </div>
+      </div>
+
+      <div class="chart-block">
+        <p class="chart-title">Tilaukset tunneittain</p>
+        <div class="chart-bars" id="dashChart"></div>
+        <div class="chart-labels" id="dashChartLabels"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="dashboard.js"></script>
+</body>
+
+</html>

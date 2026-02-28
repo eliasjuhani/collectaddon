@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="fi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C@S</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="header-left">
+        <span class="header-title">C@S Hälytys</span>
+      </div>
+      <div class="header-right">
+        <span id="connection-status" class="status-indicator connected"></span>
+        <span id="connection-text" class="header-conn-text">Yhdistetty</span>
+      </div>
+    </header>
+
+    <div class="hero-section">
+      <div class="hero-counts">
+        <div class="hero-count-item">
+          <span class="hero-number" id="order-count">-</span>
+          <span class="hero-label">COLLECT</span>
+        </div>
+        <div class="hero-divider"></div>
+        <div class="hero-count-item wolt">
+          <span class="hero-number" id="wolt-count">-</span>
+          <span class="hero-label">WOLT</span>
+        </div>
+      </div>
+      <div class="hero-oldest" id="oldest-timer" style="display:none;">
+        <span class="oldest-label">Vanhin odottaa:</span>
+        <span class="oldest-value" id="oldest-value">-</span>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <button id="refresh-btn" class="btn btn-secondary">Päivitä</button>
+      <button id="dashboard-btn" class="btn btn-primary">Dashboard</button>
+    </div>
+
+    <nav class="tab-nav">
+      <button class="tab-btn active" data-tab="general">Yleiset</button>
+      <button class="tab-btn" data-tab="layout">Jako</button>
+      <button class="tab-btn" data-tab="alert">Media</button>
+      <button class="tab-btn" data-tab="history">Historia</button>
+    </nav>
+
+    <div class="tab-content">
+
+      <!-- Yleiset (General) tab -->
+      <div class="tab-panel active" data-panel="general">
+        <div class="editor-group">
+          <label class="editor-label">Teema</label>
+          <div class="theme-picker">
+            <label class="theme-option">
+              <input type="radio" name="ui-theme" value="launchpad" id="theme-launchpad" checked>
+              <span>Launchpad</span>
+            </label>
+            <label class="theme-option">
+              <input type="radio" name="ui-theme" value="wolt" id="theme-wolt">
+              <span>Wolt</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="editor-group">
+          <label class="editor-label">Tarkistusväli (sek)</label>
+          <div class="range-group">
+            <input type="range" id="poll-interval" min="5" max="60" value="30" step="5" class="range-slider">
+            <span class="range-value" id="poll-interval-value">30</span>
+          </div>
+        </div>
+
+        <div class="editor-group">
+          <label class="editor-label">Hälytyksen kesto (sek)</label>
+          <div class="range-group">
+            <input type="range" id="alert-duration" min="3" max="20" value="10" step="1" class="range-slider">
+            <span class="range-value" id="alert-duration-value">10</span>
+          </div>
+        </div>
+
+        <label class="setting-row">
+          <span>Äänimerkit</span>
+          <input type="checkbox" id="sound-enabled" checked>
+        </label>
+
+        <label class="setting-row">
+          <span>Tumma tila</span>
+          <input type="checkbox" id="dark-mode-enabled">
+        </label>
+
+        <div class="editor-divider"></div>
+
+        <div class="editor-group">
+          <label class="editor-label">Hälytystyyli</label>
+          <select id="alert-style" class="editor-select">
+            <option value="default">Oletus (Classic)</option>
+            <option value="scoreboard">Scoreboard</option>
+            <option value="emergency">Emergency Broadcast</option>
+            <option value="slotmachine">Slot Machine</option>
+            <option value="shockwave">Shockwave</option>
+            <option value="tvstatic">TV Channel Change</option>
+            <option value="matrix">Matrix Rain</option>
+            <option value="tetris">Tetris Stack</option>
+          </select>
+        </div>
+
+        <button id="test-alert" class="btn btn-secondary btn-test-alert">Testaa hälytys</button>
+      </div>
+
+      <!-- Jako (Layout) tab -->
+      <div class="tab-panel" data-panel="layout">
+        <h4 class="section-title">Näytön jako</h4>
+        <p class="section-desc">Vedä punaista viivaa säätääksesi paneelien leveyttä</p>
+
+        <div class="split-control-container">
+          <div class="monitor-frame" id="monitor-frame">
+            <div class="monitor-left-panel" id="monitor-left">
+              <span class="panel-label">SAP</span>
+            </div>
+            <div class="monitor-divider" id="monitor-divider"></div>
+            <div class="monitor-right-panel" id="monitor-right">
+              <span class="panel-label">WOLT</span>
+            </div>
+          </div>
+          <div class="split-ratio-display">
+            <span id="split-ratio-left">50</span>% / <span id="split-ratio-right">50</span>%
+          </div>
+        </div>
+
+        <div class="editor-divider"></div>
+
+        <label class="setting-row">
+          <span>Split Mode päällä</span>
+          <input type="checkbox" id="split-mode-enabled">
+        </label>
+
+        <label class="setting-row">
+          <span>Zen Mode</span>
+          <input type="checkbox" id="zen-mode-enabled">
+        </label>
+      </div>
+      <!-- Media tab -->
+      <div class="tab-panel" data-panel="alert">
+
+        <h4 class="section-title">Collect@Store Media</h4>
+        <div class="editor-group file-group">
+          <label class="editor-label">Äänitiedosto</label>
+          <div class="file-input-wrap">
+            <span id="sound-file-name" class="file-name">Ei valittu</span>
+            <label class="btn btn-file">Valitse<input type="file" id="sound-file" accept="audio/*" hidden></label>
+            <button class="btn-reset-media" id="reset-sound" title="Poista">✕</button>
+          </div>
+        </div>
+        <div class="editor-group file-group">
+          <label class="editor-label">Kuvatiedosto</label>
+          <div class="file-input-wrap">
+            <span id="image-file-name" class="file-name">Ei valittu</span>
+            <label class="btn btn-file">Valitse<input type="file" id="image-file" accept="image/*" hidden></label>
+            <button class="btn-reset-media" id="reset-image" title="Poista">✕</button>
+          </div>
+        </div>
+
+        <div class="editor-divider"></div>
+        <h4 class="section-title">Wolt Media</h4>
+        <div class="editor-group file-group">
+          <label class="editor-label">Äänitiedosto</label>
+          <div class="file-input-wrap">
+            <span id="wolt-sound-file-name" class="file-name">Ei valittu</span>
+            <label class="btn btn-file">Valitse<input type="file" id="wolt-sound-file" accept="audio/*" hidden></label>
+            <button class="btn-reset-media" id="reset-wolt-sound" title="Poista">✕</button>
+          </div>
+        </div>
+        <div class="editor-group file-group">
+          <label class="editor-label">Kuvatiedosto</label>
+          <div class="file-input-wrap">
+            <span id="wolt-image-file-name" class="file-name">Ei valittu</span>
+            <label class="btn btn-file">Valitse<input type="file" id="wolt-image-file" accept="image/*" hidden></label>
+            <button class="btn-reset-media" id="reset-wolt-image" title="Poista">✕</button>
+          </div>
+        </div>
+
+        <div class="editor-divider"></div>
+
+        <label class="setting-row">
+          <span>Text-to-Speech (TTS)</span>
+          <input type="checkbox" id="tts-enabled">
+        </label>
+        <div class="editor-group tts-volume-group" id="tts-volume-group">
+          <label class="editor-label">TTS äänenvoimakkuus</label>
+          <div class="range-group">
+            <input type="range" id="tts-volume" min="0" max="100" value="80" step="5" class="range-slider">
+            <span class="range-value range-value-pct" id="tts-volume-value">80</span>
+          </div>
+        </div>
+        <div class="editor-group tts-group" id="tts-collect-group">
+          <label class="editor-label">TTS-teksti (Collect)</label>
+          <input type="text" id="tts-collect-text" class="editor-input"
+            placeholder="{count} uutta Collect@Store tilausta!">
+          <small class="tts-hint">Käytä {count} tilausten määränä</small>
+        </div>
+        <div class="editor-group tts-group" id="tts-wolt-group">
+          <label class="editor-label">TTS-teksti (Wolt)</label>
+          <input type="text" id="tts-wolt-text" class="editor-input" placeholder="{count} uutta Wolt tilausta!">
+          <small class="tts-hint">Käytä {count} tilausten määränä</small>
+        </div>
+
+      </div>
+
+      <!-- Historia (History) tab -->
+      <div class="tab-panel" data-panel="history">
+        <div class="history-header">
+          <span class="history-session-label">Päivä</span>
+          <span class="history-session-time" id="session-start">-</span>
+        </div>
+
+        <div class="history-grid">
+          <div class="history-tile history-tile-total">
+            <span class="history-tile-number" id="total-orders">0</span>
+            <span class="history-tile-label">Yhteensä</span>
+          </div>
+          <div class="history-tile history-tile-collect">
+            <span class="history-tile-number" id="history-collect">0</span>
+            <span class="history-tile-label">Collect</span>
+          </div>
+          <div class="history-tile history-tile-wolt">
+            <span class="history-tile-number" id="history-wolt">0</span>
+            <span class="history-tile-label">Wolt</span>
+          </div>
+          <div class="history-tile history-tile-busiest">
+            <span class="history-tile-number" id="busiest-hour">-</span>
+            <span class="history-tile-label">Vilkkain tunti</span>
+          </div>
+        </div>
+
+        <div class="history-bar-chart" id="history-chart"></div>
+        <div class="history-chart-labels" id="history-chart-labels"></div>
+        <button id="export-csv" class="btn btn-secondary" style="width: 100%; margin-top: 12px;">Lataa CSV</button>
+        <button id="reset-history" class="btn btn-secondary" style="width: 100%; margin-top: 8px; color: #E74C3C;">Nollaa päivän historia</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="idb.js"></script>
+  <script src="popup.js"></script>
+</body>
+
+</html>

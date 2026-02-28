@@ -1,0 +1,1625 @@
+﻿#cs-modern-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  z-index: 2147483647;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+
+#cs-modern-overlay .cs-bg-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+#cs-modern-overlay .cs-media {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #0d0d0d;
+  pointer-events: none;
+}
+
+
+#cs-modern-overlay .cs-gradient-overlay {
+  display: none;
+}
+
+
+#cs-modern-overlay .cs-hud-container {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 1200px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  z-index: 10;
+  padding-bottom: 20px;
+}
+
+
+#cs-modern-overlay .cs-hud-container.pos-top-left {
+  top: 30px;
+  bottom: auto;
+  left: 30px;
+  right: auto;
+  transform: none;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: row;
+  gap: 20px;
+}
+
+#cs-modern-overlay .cs-hud-container.pos-top-center {
+  top: 30px;
+  bottom: auto;
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: row;
+  gap: 20px;
+}
+
+#cs-modern-overlay .cs-hud-container.pos-top-right {
+  top: 30px;
+  bottom: auto;
+  left: auto;
+  right: 30px;
+  transform: none;
+  justify-content: flex-end;
+  align-items: flex-start;
+  flex-direction: row;
+  gap: 20px;
+}
+
+#cs-modern-overlay .cs-hud-container.pos-middle-left {
+  top: 50%;
+  bottom: auto;
+  left: 30px;
+  right: auto;
+  transform: translateY(-50%);
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  gap: 30px;
+}
+
+#cs-modern-overlay .cs-hud-container.pos-middle-right {
+  top: 50%;
+  bottom: auto;
+  left: auto;
+  right: 30px;
+  transform: translateY(-50%);
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: column;
+  gap: 30px;
+}
+
+#cs-modern-overlay .cs-hud-container.pos-center {
+  top: 50%;
+  bottom: auto;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  width: auto;
+  max-width: none;
+}
+
+#cs-modern-overlay .cs-hud-container.pos-bottom-left {
+  bottom: 30px;
+  top: auto;
+  left: 30px;
+  right: auto;
+  transform: none;
+  justify-content: flex-start;
+  align-items: flex-end;
+  flex-direction: row;
+  gap: 20px;
+}
+
+#cs-modern-overlay .cs-hud-container.pos-bottom-center {
+  bottom: 30px;
+  top: auto;
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  justify-content: center;
+  align-items: flex-end;
+  flex-direction: row;
+  gap: 20px;
+}
+
+#cs-modern-overlay .cs-hud-container.pos-bottom-right {
+  bottom: 30px;
+  top: auto;
+  left: auto;
+  right: 30px;
+  transform: none;
+  justify-content: flex-end;
+  align-items: flex-end;
+  flex-direction: row;
+  gap: 20px;
+}
+
+
+.cs-text-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5), 0 4px 20px rgba(0, 0, 0, 0.3);
+  animation: cs-slide-up 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+
+
+
+.cs-hud-container.pos-center .cs-text-group,
+.cs-hud-container.pos-top-center .cs-text-group,
+.cs-hud-container.pos-bottom-center .cs-text-group {
+  text-align: center;
+  align-items: center;
+}
+
+.cs-hud-container.pos-center .cs-brand-tag,
+.cs-hud-container.pos-top-center .cs-brand-tag,
+.cs-hud-container.pos-bottom-center .cs-brand-tag {
+  align-self: center;
+}
+
+
+.cs-hud-container.pos-top-right .cs-text-group,
+.cs-hud-container.pos-middle-right .cs-text-group,
+.cs-hud-container.pos-bottom-right .cs-text-group {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.cs-hud-container.pos-top-right .cs-brand-tag,
+.cs-hud-container.pos-middle-right .cs-brand-tag,
+.cs-hud-container.pos-bottom-right .cs-brand-tag {
+  align-self: flex-end;
+}
+
+
+.cs-hud-container.pos-top-left .cs-text-group,
+.cs-hud-container.pos-middle-left .cs-text-group,
+.cs-hud-container.pos-bottom-left .cs-text-group {
+  text-align: left;
+  align-items: flex-start;
+}
+
+.cs-brand-tag {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px 10px;
+  border-radius: 4px;
+  align-self: flex-start;
+  backdrop-filter: blur(4px);
+}
+
+.cs-main-title {
+  font-size: 42px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0;
+  line-height: 1.1;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5), 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.cs-sub-title {
+  font-size: 18px;
+  color: #bdc3c7;
+  font-weight: 400;
+}
+
+
+.cs-text-group.size-small .cs-main-title {
+  font-size: 28px;
+}
+
+.cs-text-group.size-small .cs-sub-title {
+  font-size: 14px;
+}
+
+.cs-text-group.size-small .cs-brand-tag {
+  font-size: 11px;
+}
+
+.cs-text-group.size-medium .cs-main-title {
+  font-size: 36px;
+}
+
+.cs-text-group.size-medium .cs-sub-title {
+  font-size: 16px;
+}
+
+.cs-text-group.size-medium .cs-brand-tag {
+  font-size: 12px;
+}
+
+.cs-text-group.size-large .cs-main-title {
+  font-size: 42px;
+}
+
+.cs-text-group.size-large .cs-sub-title {
+  font-size: 18px;
+}
+
+.cs-text-group.size-large .cs-brand-tag {
+  font-size: 14px;
+}
+
+
+.cs-counter-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 20px 50px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  animation: cs-pop-in 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cs-counter-card.size-massive {
+  animation: cs-pop-in-massive 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+
+.cs-counter-card.anim-pop-shake {
+  animation: cs-pop-shake 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cs-count-num {
+  font-size: 240px;
+  font-weight: 900;
+  color: #fff;
+  line-height: 0.9;
+  display: block;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+}
+
+.cs-count-label {
+  font-size: 16px;
+  color: #E74C3C;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-top: 10px;
+  display: block;
+}
+
+
+.cs-counter-card.size-small .cs-count-num {
+  font-size: 100px;
+}
+
+.cs-counter-card.size-small .cs-count-label {
+  font-size: 12px;
+}
+
+.cs-counter-card.size-small {
+  padding: 15px 30px;
+}
+
+.cs-counter-card.size-medium .cs-count-num {
+  font-size: 130px;
+}
+
+.cs-counter-card.size-medium .cs-count-label {
+  font-size: 14px;
+}
+
+.cs-counter-card.size-medium {
+  padding: 18px 40px;
+}
+
+.cs-counter-card.size-large .cs-count-num {
+  font-size: 240px;
+}
+
+.cs-counter-card.size-large .cs-count-label {
+  font-size: 16px;
+}
+
+.cs-counter-card.size-large {
+  padding: 20px 50px;
+}
+
+.cs-counter-card.size-massive .cs-count-num {
+  font-size: 330px;
+}
+
+.cs-counter-card.size-massive .cs-count-label {
+  font-size: 18px;
+}
+
+.cs-counter-card.size-massive {
+  padding: 25px 60px;
+}
+
+
+.cs-progress-track {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  z-index: 20;
+}
+
+.cs-progress-bar {
+  height: 100%;
+  background: #27AE60;
+  width: 100%;
+  box-shadow: 0 0 10px rgba(39, 174, 96, 0.6);
+  transition: width 1s linear;
+}
+
+
+.cs-close-fab {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 30;
+  transition: all 0.2s;
+  pointer-events: auto;
+}
+
+.cs-close-fab:hover {
+  background: rgba(192, 57, 43, 0.8);
+  border-color: transparent;
+}
+
+
+@keyframes cs-slide-up {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes cs-pop-in {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes cs-pop-in-massive {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes cs-pop-shake {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) rotate(0deg);
+  }
+
+  40% {
+    transform: scale(1.5) rotate(-5deg);
+  }
+
+  60% {
+    transform: scale(1.3) rotate(5deg);
+  }
+
+  80% {
+    transform: scale(1.1) rotate(-2deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+
+
+
+
+
+@media screen and (min-width: 1920px) {
+  .cs-main-title {
+    font-size: clamp(42px, 3.5vw, 80px) !important;
+  }
+
+  .cs-sub-title {
+    font-size: clamp(18px, 1.5vw, 32px) !important;
+  }
+
+  .cs-brand-tag {
+    font-size: clamp(14px, 1vw, 20px) !important;
+  }
+
+  .cs-count-num {
+    font-size: clamp(160px, 12vw, 280px) !important;
+  }
+
+  .cs-count-label {
+    font-size: clamp(16px, 1.2vw, 28px) !important;
+  }
+
+
+  .cs-text-group.size-massive .cs-main-title {
+    font-size: clamp(60px, 5vw, 120px) !important;
+  }
+
+  .cs-counter-card.size-massive .cs-count-num {
+    font-size: clamp(220px, 16vw, 400px) !important;
+  }
+}
+
+
+@media screen and (min-width: 2560px) {
+  .cs-main-title {
+    font-size: clamp(60px, 4vw, 100px) !important;
+  }
+
+  .cs-count-num {
+    font-size: clamp(200px, 14vw, 350px) !important;
+  }
+
+  .cs-hud-container {
+    max-width: 80% !important;
+  }
+}
+
+
+
+
+#cs-modern-overlay.wolt-alert .cs-brand-tag {
+  background: linear-gradient(135deg, #00B2E3 0%, #0091EA 100%);
+  color: white;
+}
+
+#cs-modern-overlay.wolt-alert .cs-count-label {
+  color: #00B2E3;
+}
+
+#cs-modern-overlay.wolt-alert .cs-progress-bar {
+  background: linear-gradient(90deg, #00B2E3, #0091EA);
+  box-shadow: 0 0 10px rgba(0, 178, 227, 0.6);
+}
+
+
+
+body.cs-zen-mode .sapUshellShellHead,
+body.cs-zen-mode #shell-header,
+body.cs-zen-mode .sapUshellShellBG,
+body.cs-zen-mode [id*="--pov_QuickFilters"],
+body.cs-zen-mode [id*="--navC"],
+body.cs-zen-mode [id*="--oBarH"] {
+  display: none !important;
+}
+
+body.cs-zen-mode [id*="--pageOrderView-cont"] {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  height: 100vh !important;
+  width: 100vw !important;
+  z-index: 9999 !important;
+}
+
+
+
+
+.cs-hidden-order {
+  display: none !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+
+.cs-wolt-order {
+  display: flex !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+.cs-split-alert {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 60px 40px;
+  min-width: 240px;
+  max-width: 320px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 9999;
+  text-align: center;
+}
+
+.cs-split-alert.wolt-alert {
+  background: linear-gradient(135deg, #00b2e3 0%, #0091ea 100%);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 20px 60px rgba(0, 178, 227, 0.3);
+}
+
+.cs-split-text {
+  margin-bottom: 30px;
+}
+
+.cs-split-brand {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.cs-split-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  margin-top: 24px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.cs-split-subtitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.cs-split-counter {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  padding: 36px 52px;
+  display: inline-block;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.cs-split-count {
+  font-size: 128px;
+  font-weight: 900;
+  color: white;
+  display: block;
+  line-height: 1;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  letter-spacing: -2px;
+}
+
+.cs-split-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: block;
+  margin-top: 8px;
+}
+
+#cs-sap-panel,
+#cs-wolt-panel {
+  position: relative;
+}
+
+/* Collect vs Wolt distinct color themes */
+.cs-alert-overlay[data-order-type="collect"] .cs-gradient-overlay {
+  background: linear-gradient(135deg, rgba(39, 174, 96, 0.15) 0%, rgba(0, 0, 0, 0.6) 100%) !important;
+}
+
+.cs-alert-overlay[data-order-type="collect"] .cs-progress-bar {
+  background: linear-gradient(90deg, #27AE60, #2ECC71) !important;
+}
+
+.cs-alert-overlay[data-order-type="wolt"] .cs-gradient-overlay {
+  background: linear-gradient(135deg, rgba(0, 178, 227, 0.15) 0%, rgba(0, 0, 0, 0.6) 100%) !important;
+}
+
+.cs-alert-overlay[data-order-type="wolt"] .cs-progress-bar {
+  background: linear-gradient(90deg, #00B2E3, #009ECE) !important;
+}
+
+.cs-alert-overlay[data-order-type="wolt"] .cs-brand-tag {
+  background: rgba(0, 178, 227, 0.3) !important;
+  color: #00B2E3 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   STYLE 1: SCOREBOARD
+   Stadium scoreboard — number bounces in from above, border lights strobe
+   ═══════════════════════════════════════════════════════════════ */
+
+.cs-style-scoreboard .cs-scoreboard-border {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 60px rgba(255, 200, 0, 0.4),
+    inset 0 0 120px rgba(255, 200, 0, 0.1);
+  animation: cs-scoreboard-strobe 0.4s ease-in-out infinite alternate;
+}
+
+.cs-style-scoreboard .cs-scoreboard-title {
+  font-size: 48px;
+  font-weight: 900;
+  color: #FFD700;
+  text-transform: uppercase;
+  letter-spacing: 6px;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.6), 0 4px 20px rgba(0, 0, 0, 0.5);
+  margin-bottom: 20px;
+  animation: cs-slide-up 0.4s ease-out;
+}
+
+.cs-style-scoreboard .cs-scoreboard-num {
+  font-size: 400px;
+  font-weight: 900;
+  color: #fff;
+  line-height: 0.85;
+  text-shadow: 0 0 40px rgba(255, 200, 0, 0.5), 0 8px 40px rgba(0, 0, 0, 0.6);
+  animation: cs-scoreboard-slam 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cs-style-scoreboard .cs-scoreboard-sub {
+  font-size: 28px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 20px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  animation: cs-slide-up 0.5s ease-out 0.3s both;
+}
+
+@keyframes cs-scoreboard-slam {
+  0% {
+    transform: translateY(-120vh) scale(1.3);
+    opacity: 0;
+  }
+
+  50% {
+    transform: translateY(30px) scale(1.05);
+    opacity: 1;
+  }
+
+  70% {
+    transform: translateY(-15px) scale(0.98);
+  }
+
+  85% {
+    transform: translateY(5px) scale(1.01);
+  }
+
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes cs-scoreboard-strobe {
+  0% {
+    box-shadow:
+      inset 0 0 60px rgba(255, 200, 0, 0.5),
+      inset 0 0 120px rgba(255, 200, 0, 0.15),
+      0 0 30px rgba(255, 200, 0, 0.3);
+  }
+
+  100% {
+    box-shadow:
+      inset 0 0 80px rgba(255, 255, 255, 0.6),
+      inset 0 0 140px rgba(255, 200, 0, 0.2),
+      0 0 50px rgba(255, 200, 0, 0.5);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   STYLE 2: EMERGENCY BROADCAST
+   Full red takeover, strobing text, thick pulsing border
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Emergency bg-layer color is set by JS based on whether image exists */
+
+.cs-style-emergency .cs-emergency-border {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  border: 12px solid;
+  animation: cs-emergency-border-pulse 0.6s ease-in-out infinite alternate;
+}
+
+.cs-style-emergency .cs-emergency-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 10;
+  width: 90%;
+}
+
+.cs-style-emergency .cs-emergency-header {
+  font-size: 36px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 20px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  animation: cs-emergency-flash 0.3s ease-in-out 3;
+}
+
+.cs-style-emergency .cs-emergency-num {
+  font-size: min(70vw, 500px);
+  font-weight: 900;
+  color: #fff;
+  line-height: 0.85;
+  text-shadow: 0 0 60px rgba(255, 255, 255, 0.4);
+  animation: cs-emergency-flash 0.3s ease-in-out 3, cs-emergency-hold 0s ease 0.9s both;
+}
+
+.cs-style-emergency .cs-emergency-msg {
+  font-size: 42px;
+  font-weight: 800;
+  color: #fff;
+  margin-top: 20px;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  animation: cs-slide-up 0.4s ease-out 0.9s both;
+}
+
+.cs-style-emergency .cs-emergency-sub {
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.85);
+  margin-top: 10px;
+  font-weight: 600;
+  animation: cs-slide-up 0.4s ease-out 1.1s both;
+}
+
+@keyframes cs-emergency-flash {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes cs-emergency-hold {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes cs-emergency-border-pulse {
+  0% {
+    border-color: #ff0000;
+  }
+
+  100% {
+    border-color: #ffffff;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   STYLE 3: SLOT MACHINE
+   Digits spin through 0-9 then land, gold flash
+   ═══════════════════════════════════════════════════════════════ */
+
+.cs-style-slotmachine .cs-slot-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 10;
+}
+
+.cs-style-slotmachine .cs-slot-title {
+  font-size: 36px;
+  font-weight: 800;
+  color: #FFD700;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 30px;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  animation: cs-slide-up 0.4s ease-out;
+}
+
+.cs-style-slotmachine .cs-slot-container {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+}
+
+.cs-style-slotmachine .cs-slot-reel {
+  width: 200px;
+  height: 280px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 16px;
+  border: 3px solid rgba(255, 215, 0, 0.4);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.2), inset 0 0 20px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+.cs-style-slotmachine .cs-slot-strip {
+  display: flex;
+  flex-direction: column;
+  animation: cs-slot-spin 1.5s cubic-bezier(0.1, 0.7, 0.3, 1) forwards;
+}
+
+.cs-style-slotmachine .cs-slot-digit {
+  width: 200px;
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 200px;
+  font-weight: 900;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.cs-style-slotmachine .cs-slot-final {
+  color: #FFD700;
+  text-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+}
+
+.cs-style-slotmachine .cs-slot-sub {
+  font-size: 24px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 30px;
+  animation: cs-slide-up 0.4s ease-out 1.6s both;
+}
+
+@keyframes cs-slot-spin {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-8400px);
+    /* 30 spinning digits * 280px = land on final */
+  }
+}
+
+/* Gold flash on landing */
+.cs-style-slotmachine::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
+  z-index: 3;
+  opacity: 0;
+  animation: cs-slot-flash 0.3s ease-out 1.5s forwards;
+  pointer-events: none;
+}
+
+@keyframes cs-slot-flash {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   STYLE 4: SHOCKWAVE
+   Massive number appears instantly, expanding rings radiate outward
+   ═══════════════════════════════════════════════════════════════ */
+
+.cs-style-shockwave .cs-shockwave-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 10;
+}
+
+.cs-style-shockwave .cs-shockwave-num {
+  font-size: min(80vw, 550px);
+  font-weight: 900;
+  line-height: 0.85;
+  text-shadow: 0 0 80px currentColor;
+  animation: cs-shockwave-appear 0.15s ease-out;
+}
+
+.cs-style-shockwave .cs-shockwave-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  margin-top: 20px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  animation: cs-slide-up 0.4s ease-out 0.3s both;
+}
+
+.cs-style-shockwave .cs-shockwave-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 3px solid;
+  transform: translate(-50%, -50%);
+  z-index: 8;
+  pointer-events: none;
+  opacity: 0;
+  animation: cs-shockwave-expand 1.5s ease-out forwards;
+}
+
+@keyframes cs-shockwave-appear {
+  0% {
+    transform: scale(3);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes cs-shockwave-expand {
+  0% {
+    width: 10px;
+    height: 10px;
+    opacity: 0.8;
+    border-width: 4px;
+  }
+
+  100% {
+    width: 200vmax;
+    height: 200vmax;
+    opacity: 0;
+    border-width: 1px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   STYLE 5: TV CHANNEL CHANGE
+   Static noise for 0.5s, then hard cut to alert
+   ═══════════════════════════════════════════════════════════════ */
+
+.cs-style-tvstatic .cs-tv-static {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  background: repeating-linear-gradient(0deg,
+      rgba(0, 0, 0, 0.15) 0px,
+      rgba(0, 0, 0, 0.15) 1px,
+      transparent 1px,
+      transparent 2px);
+  animation: cs-tv-noise 0.1s steps(8) infinite, cs-tv-static-hide 0s linear 0.5s forwards;
+  pointer-events: none;
+}
+
+.cs-style-tvstatic .cs-tv-static::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-radial-gradient(circle at 50% 50%, transparent 0, rgba(255, 255, 255, 0.03) 2px, transparent 4px);
+  animation: cs-tv-noise-shift 0.05s steps(10) infinite;
+}
+
+.cs-style-tvstatic .cs-tv-content {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  opacity: 0;
+  animation: cs-tv-cut-in 0.05s step-end 0.5s forwards;
+}
+
+.cs-style-tvstatic .cs-tv-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.cs-style-tvstatic .cs-tv-brand {
+  font-size: 18px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+}
+
+.cs-style-tvstatic .cs-tv-num {
+  font-size: min(70vw, 450px);
+  font-weight: 900;
+  color: #fff;
+  line-height: 0.85;
+  text-shadow: 0 0 40px rgba(255, 255, 255, 0.3);
+  animation: cs-tv-text-in 0.3s ease-out 0.5s both;
+}
+
+.cs-style-tvstatic .cs-tv-title {
+  font-size: 36px;
+  font-weight: 800;
+  color: #fff;
+  margin-top: 20px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.cs-style-tvstatic .cs-tv-sub {
+  font-size: 22px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+@keyframes cs-tv-noise {
+  0% {
+    background-position: 0 0;
+    opacity: 0.8;
+    background-color: #333;
+  }
+
+  25% {
+    background-position: -10px 5px;
+    opacity: 0.9;
+    background-color: #222;
+  }
+
+  50% {
+    background-position: 5px -10px;
+    opacity: 0.7;
+    background-color: #444;
+  }
+
+  75% {
+    background-position: -5px 10px;
+    opacity: 1;
+    background-color: #1a1a1a;
+  }
+
+  100% {
+    background-position: 10px -5px;
+    opacity: 0.85;
+    background-color: #2a2a2a;
+  }
+}
+
+@keyframes cs-tv-noise-shift {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  100% {
+    transform: translate(-10px, -10px);
+  }
+}
+
+@keyframes cs-tv-static-hide {
+  to {
+    opacity: 0;
+    z-index: -1;
+  }
+}
+
+@keyframes cs-tv-cut-in {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes cs-tv-text-in {
+  0% {
+    transform: scale(1.1);
+    filter: brightness(3);
+  }
+
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   STYLE 6: MATRIX RAIN
+   Characters rain down, center clears to reveal count in spotlight
+   ═══════════════════════════════════════════════════════════════ */
+
+.cs-style-matrix .cs-matrix-rain {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.cs-style-matrix .cs-matrix-col {
+  position: absolute;
+  top: -100%;
+  width: 20px;
+  font-size: 16px;
+  font-family: 'Courier New', monospace;
+  color: #00ff41;
+  line-height: 1.2;
+  white-space: pre;
+  text-align: center;
+  opacity: 0.7;
+  text-shadow: 0 0 8px #00ff41;
+  animation: cs-matrix-fall linear infinite;
+}
+
+.cs-style-matrix .cs-matrix-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 10;
+  /* Subtle spotlight — no harsh black circle */
+  background: radial-gradient(circle 300px, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.3) 50%, transparent 100%);
+  padding: 60px 80px;
+  border-radius: 50%;
+  animation: cs-matrix-spotlight 0.8s ease-out 0.5s both;
+}
+
+.cs-style-matrix .cs-matrix-num {
+  font-size: min(60vw, 400px);
+  font-weight: 900;
+  line-height: 0.85;
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 0 40px currentColor, 0 0 80px currentColor;
+  animation: cs-pop-in-massive 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.8s both;
+}
+
+.cs-style-matrix .cs-matrix-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #00ff41;
+  margin-top: 20px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px #00ff41;
+  animation: cs-slide-up 0.4s ease-out 1.2s both;
+}
+
+.cs-style-matrix[data-order-type="wolt"] .cs-matrix-col {
+  color: #00B2E3;
+  text-shadow: 0 0 8px #00B2E3;
+}
+
+.cs-style-matrix[data-order-type="wolt"] .cs-matrix-title {
+  color: #00B2E3;
+  text-shadow: 0 0 10px #00B2E3;
+}
+
+.cs-style-matrix .cs-matrix-sub {
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 8px;
+  animation: cs-slide-up 0.4s ease-out 1.4s both;
+}
+
+@keyframes cs-matrix-fall {
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(200vh);
+  }
+}
+
+@keyframes cs-matrix-spotlight {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   STYLE 7: TETRIS — full game board, pieces form the number
+   ═══════════════════════════════════════════════════════════════ */
+
+.cs-style-tetris .cs-tetris-board {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.cs-style-tetris .cs-tetris-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+  animation: cs-slide-up 0.4s ease-out 1.5s both;
+}
+
+.cs-style-tetris .cs-tetris-sub {
+  font-size: 20px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 8px;
+  letter-spacing: 2px;
+  font-family: 'Courier New', monospace;
+  animation: cs-slide-up 0.4s ease-out 1.8s both;
+}
+
+@keyframes cs-tetris-drop {
+  0% {
+    transform: translateY(-800px);
+    opacity: 0;
+  }
+
+  40% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive sizing for styled alerts on large screens */
+@media screen and (min-width: 1920px) {
+  .cs-style-scoreboard .cs-scoreboard-num {
+    font-size: clamp(300px, 22vw, 500px);
+  }
+
+  .cs-style-scoreboard .cs-scoreboard-title {
+    font-size: clamp(36px, 3vw, 64px);
+  }
+
+  .cs-style-emergency .cs-emergency-num {
+    font-size: clamp(300px, 25vw, 600px);
+  }
+
+  .cs-style-shockwave .cs-shockwave-num {
+    font-size: clamp(400px, 28vw, 650px);
+  }
+
+  .cs-style-matrix .cs-matrix-num {
+    font-size: clamp(300px, 20vw, 500px);
+  }
+
+  .cs-style-tvstatic .cs-tv-num {
+    font-size: clamp(300px, 22vw, 550px);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ENHANCED ALERT ANIMATIONS
+   ═══════════════════════════════════════════════════════════════ */
+
+/* --- Scoreboard: beam sweep, ticker, confetti --- */
+@keyframes cs-scoreboard-beam-sweep {
+  0% {
+    transform: rotate(-30deg);
+    opacity: 0.3;
+  }
+
+  100% {
+    transform: rotate(30deg);
+    opacity: 0.6;
+  }
+}
+
+@keyframes cs-scoreboard-ticker {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes cs-scoreboard-confetti {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0;
+  }
+
+  1% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(var(--confetti-x, 0), -300px) rotate(var(--confetti-rot, 360deg));
+    opacity: 0;
+  }
+}
+
+/* --- Emergency: warning stripes, alarm sweep --- */
+@keyframes cs-emergency-stripe-scroll {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 56px 0;
+  }
+}
+
+@keyframes cs-emergency-alarm-sweep {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- Slot Machine: bulb chase, jackpot reveal, coin burst --- */
+@keyframes cs-slot-bulb-chase {
+
+  0%,
+  40% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+    box-shadow: 0 0 12px 4px rgba(255, 215, 0, 0.8);
+  }
+
+  60%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+}
+
+@keyframes cs-slot-jackpot-reveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes cs-slot-coin-burst {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0;
+  }
+
+  1% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(var(--coin-x, 0), var(--coin-y, -200px)) rotate(var(--coin-rot, 720deg));
+    opacity: 0;
+  }
+}
+
+/* --- Shockwave: shake, flash, debris, cracks, glow --- */
+@keyframes cs-shockwave-shake {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  10% {
+    transform: translate(-8px, 4px);
+  }
+
+  20% {
+    transform: translate(6px, -6px);
+  }
+
+  30% {
+    transform: translate(-4px, 2px);
+  }
+
+  40% {
+    transform: translate(4px, -2px);
+  }
+
+  50% {
+    transform: translate(-2px, 4px);
+  }
+
+  60% {
+    transform: translate(2px, -2px);
+  }
+
+  70% {
+    transform: translate(-1px, 1px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes cs-shockwave-flash {
+  0% {
+    opacity: 0.8;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes cs-shockwave-debris {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+
+  1% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(var(--debris-x, 0), var(--debris-y, 0));
+    opacity: 0;
+  }
+}
+
+@keyframes cs-shockwave-crack {
+  0% {
+    height: 0;
+    opacity: 0;
+  }
+
+  1% {
+    opacity: 0.6;
+  }
+
+  100% {
+    height: 40vh;
+    opacity: 0;
+  }
+}
+
+@keyframes cs-shockwave-glow {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.3;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0.1;
+  }
+}
+
+.cs-style-shockwave .cs-shockwave-sub {
+  font-size: 24px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 15px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  animation: cs-slide-up 0.4s ease-out 0.4s both;
+}
+
+/* --- TV Static: VHS tracking, channel flash --- */
+@keyframes cs-tv-vhs-tracking {
+  0% {
+    top: -10px;
+  }
+
+  100% {
+    top: calc(100% + 10px);
+  }
+}
+
+@keyframes cs-tv-channel-flash {
+  0% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "manifest_version": 3,
+  "name": "C@S Hälytys",
+  "version": "5.0",
+  "description": "Hälyttää uusista C@S tilauksista Launchpadissa.",
+  "permissions": [
+    "storage",
+    "unlimitedStorage",
+    "alarms",
+    "scripting",
+    "tts",
+    "downloads"
+  ],
+  "host_permissions": [
+    "https://launchpad.elkjop.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://launchpad.elkjop.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "overlay.css"
+      ],
+      "run_at": "document_end",
+      "all_frames": true
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "128": "icon.png"
+    }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "inject.js",
+        "alert.html",
+        "icon.png",
+        "overlay.css",
+        "idb.js",
+        "dashboard.html",
+        "dashboard.css",
+        "dashboard.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
+}
